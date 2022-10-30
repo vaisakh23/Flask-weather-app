@@ -1,0 +1,128 @@
+<!doctype html>
+<html> 
+	<head>
+		<meta charset="utf-8"> 
+	    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"> 
+		<script src="https://kit.fontawesome.com/a9854ac00d.js"></script> 
+    </head>
+	<body> 
+    	<section class="vh-100" style="background-color: #C1CFEA;"> 
+    		<!-- search box -->
+   	 	<div class="container-fluid" style="height:15%"> 
+    			<form class="d-flex align-items-end justify-content-center pb-4 h-100" method="POST" action="{{ url_for('home') }}"> 
+    		   	 <input class="form-control form-control-lg border-0" type="text" name="city" placeholder="City name" style="width:50%"> 
+    		   	 <input class="btn btn-lg btn-dark" type="submit" value="search" style="margin-left: -5;"> 
+   			 </form>
+   		 </div>
+   			 {% with messages = get_flashed_messages() %}
+        		{% if messages %}
+        		{% for message in messages %}
+        			<div class="alert alert-danger">
+        				{{ message }}
+        			</div>
+        		{% endfor %}
+        		{% endif %}
+        		{% endwith %}
+   		 <!-- -->
+   		 <div class="container-fluid h-auto"> 
+	   	 <!-- location date -->
+	    	<div class="row"> 
+	    		 <div class="col d-flex flex-column align-items-center py-3">
+			     <h1 class="m-0">{{ wea_data.location }}</h1> 
+			     <h3 class="m-0">{{ wea_data.date_time }}</h3> 
+			     </div>
+	        </div>
+	        <!-- -->
+      	  <div class="row"> 
+            	<div class="col-md-6 py-1"> 
+                	<div class="card border-light text-center h-100"> 
+       			 	<div class="card-body h-100"> 
+        		        	<div class="row h-100"> 
+         			       	<div class="col d-flex align-items-center justify-content-center h-100">
+          				      	<img src="{{ url_for('static', filename='image/'+wea_data.icon_name+'@2x.png') }}" style="width: 100%;">
+         					   </div> 
+         					   <div class="col d-flex flex-column align-items-center justify-content-center h-100">
+           				     	<h1 class="m-0 mb-3">{{ wea_data.weather['temp'] }}</h1>
+           				     	<p class="m-0"><strong>{{ wea_data.weather['description'] }}</strong></p>
+         			           </div> 
+						    </div> 
+						</div> 
+					</div> 
+				</div> 
+     	       <div class="col-md-6 py-1"> 
+                	<div class="card border-light h-100"> 
+                    	<div class="card-body d-flex flex-column justify-content-center"> 
+                	    	<div class="row pb-3"> 
+         			       	<div class="col text-center">
+         			       		<p class="m-0"><strong>{{ wea_data.weather['max'] }}</strong></p>
+               	 		    	<p class="m-0 text-muted">High</p>
+         				       </div> 
+         				       <div class="col text-center">
+         				       	<p class="m-0"><strong>{{ wea_data.weather['wind speed'] }}</strong></p>
+           					 	<p class="m-0 text-muted">Wind Speed</p> 
+         					   </div> 
+         					   <div class="col text-center">
+         					   	<p class="m-0"><strong>{{ wea_data.weather['sunrise'] }}</strong></p>
+          					 	 <p class="m-0 text-muted">Sunrise</p>
+         				       </div> 
+        					</div> 
+        					<div class="row pt-3"> 
+         				   	<div class="col text-center">
+         				   		<p class="m-0"><strong>{{ wea_data.weather['min'] }}</strong></p>
+          					 	 <p class="m-0 text-muted">Low</p>
+         					   </div> 
+         				       <div class="col text-center">
+          					 	 <p class="m-0"><strong>{{ wea_data.weather['visibility'] }}</strong></p>
+          					 	 <p class="m-0 text-muted">Visibility</p>
+         					   </div> 
+					            <div class="col text-center">
+					            	<p class="m-0"><strong>{{ wea_data.weather['sunset'] }}</strong></p>
+          					 	 <p class="m-0 text-muted">Sunset</p>
+					            </div> 
+						    </div> 
+						</div> 
+					</div> 
+				</div> 
+			</div> 
+        <div class="row"> 
+        	<div class="col-md-6 py-1"> 
+      	  	<div class="card border-light h-100"> 
+       		 	<div class="card-body h-100"> 
+        				<div class="row h-100"> 
+        					{% for i in range(6) %}
+         			   	<div class="col-2 d-flex align-items-center justify-content-around text-center pt-2 pb-2 h-100"> 
+          				  	<div class="flex-column"> 
+           					 	<p class="small"><strong>{{ wea_data.forcast['temp'][i] }}</strong></p> 
+           					 	<img src="{{ url_for('static', filename='image/'+ wea_data.forcast['icon'][i] + '@2x.png') }}" style="width: 100%;">
+           						 <p class="mb-0"><strong>{{ wea_data.forcast['time'][i][:4] }}</strong></p> 
+           						 <p class="mb-0 text-muted" style="font-size: .65rem;">{{ wea_data.forcast['time'][i][5:] }}</p> 
+          					  </div>
+          				   </div>  
+          				  {% endfor %}   
+        				</div> 
+       			 </div> 
+      		  </div> 
+     	   </div> 
+     	   <div class="col-md-6 py-1"> 
+      	  	<div class="card border-light h-100"> 
+       		 	<div class="card-body h-100"> 
+        				<div class="row h-100"> 
+        					{% for i in range(6) %}
+         			   	<div class="col-2 d-flex align-items-center justify-content-around text-center pt-2 pb-2 h-100"> 
+          				  	<div class="flex-column"> 
+           					 	<p class="small"><strong>{{ wea_data.day_forcast['temp'][i] }}</strong></p> 
+           					 	<img src="{{ url_for('static', filename='image/'+ wea_data.day_forcast['icon'][i] + '@2x.png') }}" style="width: 100%;">
+           						 <p class="mb-0"><strong>{{ wea_data.day_forcast['day'][i] }}</strong></p> 
+          					  </div> 
+         			 	   </div> 
+         				   {% endfor %}        		  	        
+        		        </div> 
+       		     </div> 
+      	 	   </div> 
+       		 </div> 
+   		    </div> 
+		  </div> 
+	    </section>
+	</body>
+</html>
